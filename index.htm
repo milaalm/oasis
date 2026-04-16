@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oasis - Guía de Donación GDL</title>
+    <style>
+        :root {
+            --bg-pastel: #FFF9FB;
+            --sidebar-lila: #F3E5F5;
+            --pink-accent: #F06292;
+            --lila-dark: #9575CD;
+            --text-color: #4A4A4A;
+            --white: #FFFFFF;
+            --shadow: rgba(149, 117, 205, 0.15);
+            --success: #66BB6A;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            background-color: var(--bg-pastel);
+            color: var(--text-color);
+            overflow: hidden;
+        }
+
+        /* Barra Lateral */
+        .sidebar {
+            width: 280px;
+            background-color: var(--sidebar-lila);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid rgba(0,0,0,0.05);
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--pink-accent);
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-img-sidebar { 
+            max-width: 140px; 
+            height: auto; 
+            border-radius: 15px;
+            display: block;
+        }
+
+        .img-fallback {
+            width: 80px;
+            height: 80px;
+            background: var(--pink-accent);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: bold;
+            font-size: 40px;
+        }
+
+        .menu-item {
+            width: 100%;
+            background: none;
+            border: none;
+            text-align: left;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            font-size: 15px;
+            cursor: pointer;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            color: var(--text-color);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .menu-item:hover {
+            background-color: rgba(240, 98, 146, 0.1);
+            transform: translateX(5px);
+        }
+
+        .menu-item.active {
+            background-color: var(--pink-accent);
+            color: white;
+            box-shadow: 0 4px 10px var(--shadow);
+        }
+
+        /* Contenido Principal */
+        .main-content { 
+            flex-grow: 1; 
+            padding: 40px; 
+            overflow-y: auto; 
+            display: flex;
+            flex-direction: column;
+            scroll-behavior: smooth;
+        }
+
+        .section { display: none; width: 100%; max-width: 1000px; margin: 0 auto; padding-bottom: 50px; }
+        .section.active { display: block; animation: fadeIn 0.5s ease; }
+
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(15px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        h1 { color: var(--lila-dark); font-size: 32px; margin-bottom: 10px; }
+        .subtitle { color: var(--pink-accent); font-weight: bold; margin-bottom: 30px; display: block; }
+
+        /* Tarjeta de Encabezado de Sección con Imagen */
+        .section-header-card {
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            display: flex;
+            box-shadow: 0 10px 25px var(--shadow);
+            margin-bottom: 30px;
+            min-height: 200px;
+        }
+
+        .header-image {
+            width: 40%;
+            background-size: cover;
+            background-position: center;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff0f5;
+        }
+
+        .header-text {
+            padding: 30px;
+            width: 60%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Componentes Interactivos */
+        .interactive-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px var(--shadow);
+            border-left: 6px solid var(--lila-dark);
+        }
+
+        /* Calculadora */
+        .calc-grid {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-top: 15px;
+            margin-bottom: 25px;
+        }
+        input[type="number"] {
+            padding: 10px;
+            border-radius: 10px;
+            border: 2px solid var(--sidebar-lila);
+            width: 120px;
+            font-size: 18px;
+        }
+
+        /* Tabla de Equivalencias */
+        .impact-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        .impact-table th {
+            background-color: var(--sidebar-lila);
+            color: var(--lila-dark);
+            text-align: left;
+            padding: 12px;
+            font-size: 14px;
+        }
+        .impact-table td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+        }
+        .highlight-row { font-weight: bold; color: var(--pink-accent); }
+
+        /* Welcome Box */
+        .welcome-box {
+            text-align: center;
+            padding: 60px 40px;
+            background: white;
+            border-radius: 40px;
+            box-shadow: 0 15px 50px var(--shadow);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .logo-large {
+            max-width: 280px;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.05));
+        }
+
+        .contact-info-box {
+            margin-top: 40px;
+            padding: 20px;
+            border-top: 1px dashed var(--lila-dark);
+            width: 100%;
+        }
+
+        .contact-email {
+            font-size: 18px;
+            color: var(--lila-dark);
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* Location Grid */
+        .location-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .location-card {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 6px 15px var(--shadow);
+            border-top: 5px solid var(--pink-accent);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .btn-map {
+            display: block;
+            text-align: center;
+            background: var(--lila-dark);
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: opacity 0.3s;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .sidebar { width: 80px; padding: 10px; }
+            .menu-item span { display: none; }
+            .logo-img-sidebar { max-width: 50px; }
+            .section-header-card { flex-direction: column; }
+            .header-image, .header-text { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="sidebar">
+        <div class="logo-container">
+            <img src="logo oasis.jpg" alt="Logo Oasis" class="logo-img-sidebar" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+            <div class="img-fallback" style="display:none">O</div>
+        </div>
+        
+        <button class="menu-item active" onclick="showSection('inicio', this)">
+            🏠 <span>Inicio</span>
+        </button>
+        <button class="menu-item" onclick="showSection('tapitas', this)">
+            🥤 <span>Tapitas</span>
+        </button>
+        <button class="menu-item" onclick="showSection('sangre', this)">
+            🩸 <span>Sangre</span>
+        </button>
+        <button class="menu-item" onclick="showSection('cabello', this)">
+            💇‍♀️ <span>Cabello</span>
+        </button>
+        <button class="menu-item" onclick="showSection('sillas', this)">
+            ♿ <span>Suministros</span>
+        </button>
+    </nav>
+
+    <main class="main-content">
+        
+        <!-- SECCIÓN: INICIO -->
+        <div id="inicio" class="section active">
+            <div class="welcome-box">
+                <img src="logo oasis.jpg" alt="Oasis Logo" class="logo-large" onerror="this.src='https://via.placeholder.com/280x150?text=Oasis+Guadalajara'">
+                <h1>Tu ayuda transforma vidas</h1>
+                <p style="font-size: 18px; color: #666; max-width: 600px;">Explora las opciones de donación en Guadalajara y descubre cómo tu aporte hoy genera un oasis mañana.</p>
+                
+                <div style="display:flex; gap:15px; margin-top:30px; flex-wrap: wrap; justify-content: center;">
+                    <div class="interactive-card" style="margin:0; border-color: var(--pink-accent);">
+                        <h4 style="margin:0">Total Recolectado (Comunidad)</h4>
+                        <p style="font-size: 24px; font-weight: bold; color: var(--pink-accent); margin: 10px 0;">+7000 Tapitas</p>
+                        <small>Actualizado hoy</small>
+                    </div>
+                </div>
+
+                <div class="contact-info-box">
+                    <p style="color: #888; margin-bottom: 10px;">¿Tienes dudas ?</p>
+                    <div class="contact-email">
+                        ✉️ sugarstrongsisters@gmail.com
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: TAPITAS -->
+        <div id="tapitas" class="section">
+            <div class="section-header-card">
+                <div class="header-image">
+                    <!-- Icono de Corazón Estilizado -->
+                    <svg width="120" height="120" viewBox="0 0 24 24" fill="var(--pink-accent)" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                </div>
+                <div class="header-text">
+                    <h1>Donación de Tapitas</h1>
+                    <p>Pequeñas acciones que nacen del corazón y generan grandes cambios en tratamientos oncológicos.</p>
+                </div>
+            </div>
+            
+            <div class="interactive-card">
+                <h3>🧮 Calculadora de Impacto</h3>
+                <div class="calc-grid">
+                    <input type="number" id="tapaInput" placeholder="0" oninput="calcImpact()">
+                    <div>
+                        <p id="impactResult" style="font-weight: bold; color: var(--success);">Ingresa una cantidad</p>
+                    </div>
+                </div>
+
+                <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+
+                <h3>📊 Tabla de Equivalencias</h3>
+                <table class="impact-table">
+                    <thead>
+                        <tr>
+                            <th>Cantidad de Tapas</th>
+                            <th>Beneficio Generado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>1,000 tapitas</td><td>Apoyo en transporte</td></tr>
+                        <tr><td>3,000 tapitas</td><td>Suplemento alimenticio</td></tr>
+                        <tr class="highlight-row"><td>5,000 tapitas</td><td>⭐ 1 Quimioterapia (Promedio)</td></tr>
+                        <tr><td>10,000 tapitas</td><td>Estudio de laboratorio</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 style="margin-top: 30px; color: var(--lila-dark);">📍 Centros de Acopio en GDL</h3>
+            <div class="location-grid">
+                <div class="location-card">
+                    <strong>Nariz Roja GDL</strong>
+                    <p>Calle Hospital 142, El Retiro. Principal receptor de tapitas para quimios.</p>
+                    <a href="https://www.google.com/maps/search/Nariz+Roja+AC+Guadalajara" target="_blank" class="btn-map">📍 Ver Mapa</a>
+                </div>
+                <div class="location-card">
+                    <strong>Mi Gran Esperanza</strong>
+                    <p>C. Juan Álvarez 237, Centro. Apoyo integral a niños con cáncer.</p>
+                    <a href="https://www.google.com/maps/search/Mi+Gran+Esperanza+AC" target="_blank" class="btn-map">📍 Ver Mapa</a>
+                </div>
+                <div class="location-card">
+                    <strong>Hospital General de Occidente</strong>
+                    <p>Av. Zoquipan 1050. Conocido como "Zoquipan", recibe donaciones constantes.</p>
+                    <a href="https://www.google.com/maps/search/Hospital+General+de+Occidente+Zoquipan" target="_blank" class="btn-map">📍 Ver Mapa</a>
+                </div>
+                <div class="location-card">
+                    <strong>Banco de Tapitas GDL</strong>
+                    <p>Embajadores en Zapopan y Centro. Contenedores en plazas principales.</p>
+                    <a href="https://www.google.com/maps/search/Banco+de+Tapitas+Guadalajara" target="_blank" class="btn-map">📍 Ver Mapa</a>
+                </div>
+                <div class="location-card">
+                    <strong>CUCS - UdeG</strong>
+                    <p>Sierra Mojada 950. Centro Universitario de Ciencias de la Salud (Recolección estudiantil).</p>
+                    <a href="https://www.google.com/maps/search/CUCS+UdeG+Guadalajara" target="_blank" class="btn-map">📍 Ver Mapa</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: SANGRE -->
+        <div id="sangre" class="section">
+            <div class="section-header-card">
+                <div class="header-image" style="background-color: #ffebee;">
+                    <svg width="100" height="100" viewBox="0 0 24 24" fill="#e53935" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2c-4.42 0-8 3.58-8 8 0 5.25 8 12 8 12s8-6.75 8-12c0-4.42-3.58-8-8-8z"/>
+                    </svg>
+                </div>
+                <div class="header-text">
+                    <h1>Donación de Sangre</h1>
+                    <p>Un regalo de vida que solo te toma 45 minutos.</p>
+                </div>
+            </div>
+
+            <div class="interactive-card">
+                <h3>✅ Requisitos básicos</h3>
+                <p>• Peso mayor a 50kg • Ayuno de 4 horas • No haber estado enfermo de gripe, tos, diarrea o infección dental en los últimos 14 días•  Acudir con una identificación oficial con fotografía y vigente (INE, pasaporte, cédula profesional, credencial ADIMSS, cartilla de salud vigente, licencia de manejo)   •No haber ingerido bebidas alcohólicas en 72 horas previas a la donación </p>
+            </div>
+
+            <div class="location-grid">
+                <div class="location-card">
+                    <strong>Hospital Civil Viejo</strong>
+                    <p>Coronel Calderón 777. Banco de sangre principal.</p>
+                    <a href="https://www.google.com/maps/search/Hospital+Civil+Viejo+Banco+de+Sangre" target="_blank" class="btn-map">📍 Ver Mapa</a>
+                </div>
+                <div class="location-card">
+                    <strong>CETS Jalisco</strong>
+                    <p>Av. Zoquipan 1050, Zapopan.</p>
+                    <a href="https://www.google.com/maps/search/CETS+Jalisco" target="_blank" class="btn-map">📍 Ver Mapa</a>
+                </div>
+                <div class="location-card">
+                    <strong>HGR 46 IMSS</strong>
+                    <p>Av. 8 de Julio y Lázaro Cárdenas.</p>
+                    <a href="https://www.google.com/maps/search/IMSS+46+Banco+de+Sangre" target="_blank" class="btn-map">📍 Ver Mapa</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: CABELLO -->
+        <div id="cabello" class="section">
+            <div class="section-header-card">
+                <div class="header-image" style="background-color: #f3e5f5;">
+                    <svg width="100" height="100" viewBox="0 0 24 24" fill="var(--lila-dark)" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 3c-4.97 0-9 4.03-9 9 0 4.97 4.03 9 9 9s9-4.03 9-9c0-4.97-4.03-9-9-9zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/>
+                    </svg>
+                </div>
+                <div class="header-text">
+                    <h1>Donación de Cabello</h1>
+                    <p>Ayúdanos a devolver sonrisas con pelucas oncológicas.</p>
+                </div>
+            </div>
+
+            <div class="interactive-card">
+                <h3>📏 Regla Virtual</h3>
+                <p>Mínimo <strong>30 cm</strong> de largo, limpio y seco.</p>
+                <div style="height: 10px; width: 100%; background: #eee; border-radius: 5px; margin-top: 15px;">
+                    <div style="width: 75%; height: 100%; background: var(--pink-accent); border-radius: 5px;"></div>
+                </div>
+            </div>
+
+            <div class="location-grid">
+                <div class="location-card">
+                    <strong>Nariz Roja</strong>
+                    <p>Taller artesanal de pelucas.</p>
+                    <a href="https://www.google.com/maps/search/Nariz+Roja+AC" target="_blank" class="btn-map">📍 Ver Mapa</a>
+                </div>
+                <div class="location-card">
+                    <strong>CANICA A.C.</strong>
+                    <p>Apoyo a niños y sus familias.</p>
+                    <a href="https://www.google.com/maps/search/CANICA+AC" target="_blank" class="btn-map">📍 Ver Mapa</a>
+                </div>
+                <div class="location-card">
+                    <strong>DIF Jalisco</strong>
+                    <p>Av. Alcalde 1220. Campañas permanentes.</p>
+                    <a href="https://www.google.com/maps/search/DIF+Jalisco+Oficinas+Centrales" target="_blank" class="btn-map">📍 Ver Mapa</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: SILLAS -->
+        <div id="sillas" class="section">
+            <div class="section-header-card">
+                <div class="header-image" style="background-color: #e8f5e9;">
+                    <svg width="100" height="100" viewBox="0 0 24 24" fill="var(--success)" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                    </svg>
+                </div>
+                <div class="header-text">
+                    <h1>Suministros Médicos</h1>
+                    <p>Aparatos ortopédicos y medicamentos que salvan el día.</p>
+                </div>
+            </div>
+            
+            <div class="interactive-card">
+                <h3>📦 Selecciona tu donativo</h3>
+                <select id="itemSelect" onchange="updateNeeds()" style="width: 100%; padding: 12px; border-radius: 10px; border: 2px solid var(--sidebar-lila);">
+                    <option value="">Selecciona...</option>
+                    <option value="silla">Silla de Ruedas</option>
+                    <option value="muletas">Muletas / Andaderas</option>
+                    <option value="medicamento">Medicamento vigente</option>
+                </select>
+                <div id="needResult" style="margin-top: 15px; padding: 10px; border-radius: 10px;"></div>
+            </div>
+
+            <div class="location-grid">
+                <div class="location-card">
+                    <strong>Cáritas GDL</strong>
+                    <p>Belisario Domínguez 511.</p>
+                    <a href="https://www.google.com/maps/search/Caritas+Guadalajara" target="_blank" class="btn-map">📍 Ver Mapa</a>
+                </div>
+                <div class="location-card">
+                    <strong>Albergue Los Pinos</strong>
+                    <p>Atención a pacientes de Hospitales Civiles.</p>
+                    <a href="https://www.google.com/maps/search/Albergue+Los+Pinos+GDL" target="_blank" class="btn-map">📍 Ver Mapa</a>
+                </div>
+                <div class="location-card">
+                    <strong>Cruz Roja GDL</strong>
+                    <p>Parque Morelos. Insumos generales.</p>
+                    <a href="https://www.google.com/maps/search/Cruz+Roja+Guadalajara+Parque+Morelos" target="_blank" class="btn-map">📍 Ver Mapa</a>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        function showSection(id, btn) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.menu-item').forEach(b => b.classList.remove('active'));
+            const target = document.getElementById(id);
+            if(target) target.classList.add('active');
+            if(btn) btn.classList.add('active');
+            document.querySelector('.main-content').scrollTop = 0;
+        }
+
+        function calcImpact() {
+            const val = document.getElementById('tapaInput').value;
+            const res = document.getElementById('impactResult');
+            if(val > 0) {
+                const quimios = Math.floor(val / 5000);
+                if (quimios > 0) {
+                    res.innerHTML = `🌟 ¡Equivale a <strong>${quimios}</strong> quimioterapia(s)!`;
+                    res.style.color = "var(--pink-accent)";
+                } else {
+                    res.innerHTML = `¡Faltan ${5000 - val} para lograr una quimio!`;
+                    res.style.color = "var(--success)";
+                }
+            } else { res.innerHTML = "Ingresa una cantidad"; }
+        }
+
+        function updateNeeds() {
+            const val = document.getElementById('itemSelect').value;
+            const res = document.getElementById('needResult');
+            const data = {
+                silla: "📍 Cáritas GDL requiere sillas de ruedas urgentes.",
+                muletas: "📍 Cruz Roja acepta muletas en buen estado.",
+                medicamento: "📍 Nariz Roja recibe oncológicos vigentes."
+            };
+            if(val) {
+                res.style.background = "#E8F5E9";
+                res.innerHTML = `<strong>Sugerencia:</strong> ${data[val]}`;
+            } else { res.innerHTML = ""; }
+        }
+    </script>
+</body>
+</html>
